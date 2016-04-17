@@ -1,6 +1,6 @@
 //
 //  BaseService.swift
-//  SpotAppParse
+//  Spot Ninja
 //
 //  Created by Ammar Karim on 3/15/16.
 //  Copyright © 2016 Parse. All rights reserved.

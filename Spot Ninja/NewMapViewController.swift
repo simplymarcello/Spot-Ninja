@@ -1,6 +1,6 @@
 //
 //  NewMapViewController.swift
-//  Project Spot
+//  Spot Ninja
 //
 //  Created by Marcello & Ammar on 10/28/15.
 //  Copyright © 2015 Parse. All rights reserved.

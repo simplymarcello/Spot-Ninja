@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  Project Spot
+//  Spot Ninja
 //
 //  Created by Marcello & Ammar on 10/28/15.
 //  Copyright © 2015 Parse. All rights reserved.
@@ -18,12 +18,17 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet var password: UITextField!
     
     @IBOutlet var signUpText: UIButton!
-    
-    @IBOutlet var registerLabel: UILabel!
+
+    @IBOutlet weak var PrimaryText: UIButton!
+    @IBOutlet weak var SecondaryText: UIButton!
     
     @IBOutlet var logInText: UIButton!
     
-    var signUpActive = true
+    @IBOutlet var registerLabel: UILabel!
+    
+
+    
+    var signUpActive = false
     
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     
@@ -56,14 +61,12 @@ class ViewController: UIViewController, UITextFieldDelegate {
             activityIndicator.startAnimating()
             UIApplication.sharedApplication().beginIgnoringInteractionEvents()
             
-            var errorMessage = "Please try again later"
-            
             if signUpActive == true {
                 
                 let usernames = userName.text
                 let passwords = password.text
             
-            //Firebase SignUp
+                //Firebase SignUp
                 FIREBASE_URL.createUser(usernames, password: passwords,
                     withValueCompletionBlock: { (error, result) -> Void in
                         self.activityIndicator.stopAnimating()
@@ -119,18 +122,17 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
     }
     
-    @IBAction func logInButton(sender: AnyObject) {
-        
+    @IBAction func SecondaryButton(sender: AnyObject) {
         if signUpActive == true {
-            signUpText.setTitle("Login", forState: UIControlState.Normal)
-            registerLabel.text = "Not registered?"
-            logInText.setTitle("SignUp", forState: UIControlState.Normal)
-            signUpActive = false
-        } else {
             signUpText.setTitle("Sign Up", forState: UIControlState.Normal)
             registerLabel.text = "Already registered?"
             logInText.setTitle("Login", forState: UIControlState.Normal)
             signUpActive = true
+        } else {
+            signUpText.setTitle("Login", forState: UIControlState.Normal)
+            registerLabel.text = "Not registered?"
+            logInText.setTitle("SignUp", forState: UIControlState.Normal)
+            signUpActive = false
         }
     }
     
