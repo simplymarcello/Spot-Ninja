@@ -16,12 +16,7 @@ let geoFire = GeoFire(firebaseRef: FIREBASE_URL)
 
 class NewMapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
-    @IBAction func LogoutAction(sender: AnyObject) {
-        CURRENT_USER.unauth()
-        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: "uid")
-        let rootController = storyboard!.instantiateViewControllerWithIdentifier("welcome")
-        self.presentViewController(rootController, animated: true, completion: nil)
-    }
+    @IBOutlet weak var userHeadingBtn: UIButton!
     
     var spots = Dictionary<String,CLLocation>()
     
@@ -41,7 +36,6 @@ class NewMapViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
         
         return randomString
     }
-    
 
     @IBOutlet weak var map: MKMapView!
     
@@ -60,8 +54,11 @@ class NewMapViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
     
     let appDel: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
-    override func viewDidAppear(animated: Bool) {
-        self.tabBarController?.tabBar.hidden = true
+    @IBAction func LogoutAction(sender: AnyObject) {
+        CURRENT_USER.unauth()
+        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: "uid")
+        let rootController = storyboard!.instantiateViewControllerWithIdentifier("welcome")
+        self.presentViewController(rootController, animated: true, completion: nil)
     }
     
 // Still implimenting this
@@ -103,26 +100,16 @@ class NewMapViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
         let annotationsToRemove = map.annotations
         self.map.removeAnnotations(annotationsToRemove)
     }
-
     
     override func viewDidLoad() {
-        super.viewDidLoad()
         map.delegate = self
         manager = CLLocationManager()
         manager.delegate = self
+        let trackingButton = MKUserTrackingBarButtonItem(mapView: self.map)
+        navigationItem.rightBarButtonItem = trackingButton
+        super.viewDidLoad()
         manager.desiredAccuracy = kCLLocationAccuracyBest
         self.map.showsUserLocation = true
-        
-        if manager.respondsToSelector(#selector(CLLocationManager.requestAlwaysAuthorization)) == true {
-            manager.requestAlwaysAuthorization()
-            manager.startUpdatingLocation()
-            let triggerTime = (Int64(NSEC_PER_SEC) * 3)
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, triggerTime), dispatch_get_main_queue(), { () -> Void in
-                self.zoomInOnce()
-            })
-        } else {
-            self.zoomInOnce()
-        }
         
         let uilpgr = UILongPressGestureRecognizer(target: self, action: #selector(NewMapViewController.action(_:)))
         
@@ -180,8 +167,21 @@ class NewMapViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
             
         }
     }
-    
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation], didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        
+        if CLLocationManager.locationServicesEnabled() {
+            switch status {
+            case .NotDetermined:
+                manager.requestAlwaysAuthorization()
+            case .AuthorizedWhenInUse:
+                manager.startUpdatingLocation()
+                map.showsUserLocation = true
+                map.setUserTrackingMode(.Follow, animated: true)
+            default:
+                break
+            }
+        }
         
         let userLocation:CLLocation = locations[0] as CLLocation
         

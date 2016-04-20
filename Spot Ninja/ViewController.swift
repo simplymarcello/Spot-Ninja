@@ -26,8 +26,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet var registerLabel: UILabel!
     
-
-    
     var signUpActive = false
     
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
