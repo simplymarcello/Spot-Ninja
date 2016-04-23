@@ -36,5 +36,7 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>So we can help you find amazing free parking spaces we need to know where you are.</string>
 </dict>
 </plist>

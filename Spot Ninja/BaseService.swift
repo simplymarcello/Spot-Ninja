@@ -13,11 +13,17 @@ let Base_URL = "https://vivid-heat-8942.firebaseio.com"
 
 let FIREBASE_URL = Firebase(url:Base_URL)
 
-var CURRENT_USER: Firebase
+var CURRENT_USER: Firebase?
 {
-    let userID = NSUserDefaults.standardUserDefaults().valueForKey("uid") as! String
-    
-    let currentUser = Firebase(url:"\(FIREBASE_URL)").childByAppendingPath("users").childByAppendingPath(userID)
-    
-    return currentUser!
+    if NSUserDefaults.standardUserDefaults().valueForKey("uid") == nil {
+        return nil
+    } else {
+        let userID = NSUserDefaults.standardUserDefaults().valueForKey("uid") as! String
+        
+        let currentUser = Firebase(url:"\(FIREBASE_URL)").childByAppendingPath("users").childByAppendingPath(userID)
+        
+        return currentUser!
+    }
 }
+
+

@@ -8,27 +8,39 @@
 
 import UIKit
 import Firebase
-import CoreData
 
 //@available(iOS 8.0, *)
-class ViewController: UIViewController, UITextFieldDelegate {
+extension UIViewController {
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
+    }
     
-    @IBOutlet var userName: UITextField!
-    
-    @IBOutlet var password: UITextField!
-    
-    @IBOutlet var signUpText: UIButton!
+    func dismissKeyboard() {
+        view.endEditing(true)
+    }
+}
 
-    @IBOutlet weak var PrimaryText: UIButton!
-    @IBOutlet weak var SecondaryText: UIButton!
-    
-    @IBOutlet var logInText: UIButton!
-    
-    @IBOutlet var registerLabel: UILabel!
-    
-    var signUpActive = false
-    
+class ViewController: UIViewController, UITextFieldDelegate {
+    @IBOutlet weak var emailTextField: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
+    let gradient: CAGradientLayer = CAGradientLayer()
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
+    func textFieldShouldReturn(userText: UITextField) -> Bool {
+        userText.resignFirstResponder()
+        return true;
+    }
+    override func viewDidLoad() {
+        if (CURRENT_USER != nil) {
+            self.performSegueWithIdentifier("SignInSegue", sender: nil)
+        }
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
+        super.viewDidLoad()
+        gradient.frame = self.view.bounds
+        gradient.colors = [UIColorFromRGB(0x1D77EF).CGColor, UIColorFromRGB(0x81F3FD).CGColor]
+        view.layer.insertSublayer(gradient, atIndex: 0)
+    }
     
     func displayAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
@@ -38,17 +50,21 @@ class ViewController: UIViewController, UITextFieldDelegate {
         self.presentViewController(alert, animated: true, completion: nil)
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
+    func UIColorFromRGB(rgbValue: UInt) -> UIColor {
+        return UIColor(
+            red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
+            green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
+            blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
+            alpha: CGFloat(1.0)
+        )
     }
-    
-    @IBAction func signUpButton(sender: AnyObject) {
+
+    @IBAction func SignInButton(sender: AnyObject) {
+        let email = self.emailTextField.text
+        let password = self.passwordTextField.text
         
-        if userName.text == "" || password.text == "" {
-            // display an alert if any field is empty
-            displayAlert("Error in form", message: "Please enter a username and password")
-            
+        if email == "" || password == "" {
+            self.displayAlert("Error", message: "Please enter your email and password")
         } else {
             // set up a Spinner that for the registration is processing
             activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, 50, 50))
@@ -59,86 +75,29 @@ class ViewController: UIViewController, UITextFieldDelegate {
             activityIndicator.startAnimating()
             UIApplication.sharedApplication().beginIgnoringInteractionEvents()
             
-            if signUpActive == true {
-                
-                let usernames = userName.text
-                let passwords = password.text
-            
-                //Firebase SignUp
-                FIREBASE_URL.createUser(usernames, password: passwords,
-                    withValueCompletionBlock: { (error, result) -> Void in
-                        self.activityIndicator.stopAnimating()
-                        UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                        if error != nil {
-                            // There was an error creating the account
-                            print("You played yoself")
-                            print(error)
-                        } else {
-                           
-                            FIREBASE_URL.authUser(usernames, password: passwords, withCompletionBlock: { (error, authData) -> Void in
-                                
-                                if error == nil {
-                                    NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: "uid")
-                                    print("account Created :)")
-                                    
-                                } else {
-                                    print(error)
-                                }
-                                
-                            
-                            })
-                            let uid = result["uid"] as? String
-                            
-                            print("Successfully created user account with uid: \(uid)")
-                            let mapViewControllerObejct = self.storyboard?.instantiateViewControllerWithIdentifier("logined")
-                            self.presentViewController(mapViewControllerObejct!, animated: true, completion: nil)
+            //Firebase LogIn
+            FIREBASE_URL.authUser(email, password: password, withCompletionBlock: { error, authData in
+                self.activityIndicator.stopAnimating()
+                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                if error != nil {
+                    if let errorCode = FAuthenticationError(rawValue: error.code) {
+                        switch (errorCode) {
+                        case .UserDoesNotExist:
+                            self.displayAlert("Invalid user", message: "User is invalid")
+                        case .InvalidEmail:
+                            self.displayAlert("Invalid email", message: "Email address is invalid")
+                        case .InvalidPassword:
+                            self.displayAlert("Invalid password", message: "Password is invalid")
+                        default:
+                            self.displayAlert("Sign in Error", message: "Unable to sign in at this time")
+                        }
+                    }
+                } else {
+                    NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: "uid")
+                    self.performSegueWithIdentifier("SignInSegue", sender: nil)
+                }
+            })
+        }
+    }
 
-                        }
-                })
-                
-            } else {
-                //Firebase LogIn
-                FIREBASE_URL.authUser(userName.text!, password: password.text!,
-                    withCompletionBlock: { error, authData in
-                        self.activityIndicator.stopAnimating()
-                        UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                        if error != nil {
-                            // There was an error logging in to this account
-                            print("You played yoself")
-                            print(error)
-                            
-                        } else {
-                            // We are now logged in
-                            NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: "uid")
-                            let mapViewControllerObejct = self.storyboard?.instantiateViewControllerWithIdentifier("logined")
-                            self.presentViewController(mapViewControllerObejct!, animated: true, completion: nil)
-                            
-                        }
-                })
-            }
-        }
-        
-    }
-    
-    @IBAction func SecondaryButton(sender: AnyObject) {
-        if signUpActive == true {
-            signUpText.setTitle("Sign Up", forState: UIControlState.Normal)
-            registerLabel.text = "Already registered?"
-            logInText.setTitle("Login", forState: UIControlState.Normal)
-            signUpActive = true
-        } else {
-            signUpText.setTitle("Login", forState: UIControlState.Normal)
-            registerLabel.text = "Not registered?"
-            logInText.setTitle("SignUp", forState: UIControlState.Normal)
-            signUpActive = false
-        }
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        userName.delegate = self
-        password.delegate = self
-    }
-    
 }

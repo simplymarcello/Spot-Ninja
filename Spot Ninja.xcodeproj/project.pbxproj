@@ -8,13 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		4F59DE581CC333B20058542B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F59DE561CC333B20058542B /* LaunchScreen.storyboard */; };
-		4F59DE601CC334770058542B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F59DE5F1CC334770058542B /* Main.storyboard */; };
 		4F59DE661CC3349A0058542B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F59DE611CC334990058542B /* AppDelegate.swift */; };
 		4F59DE671CC3349A0058542B /* NewMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F59DE621CC334990058542B /* NewMapViewController.swift */; };
 		4F59DE681CC3349A0058542B /* ShowRouteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F59DE631CC3349A0058542B /* ShowRouteViewController.swift */; };
 		4F59DE691CC3349A0058542B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F59DE641CC3349A0058542B /* ViewController.swift */; };
 		4F59DE6A1CC3349A0058542B /* BaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F59DE651CC3349A0058542B /* BaseService.swift */; };
-		4FB7FBC21CC35C570017AD5C /* Spot-Ninja-Background.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FB7FBC11CC35C570017AD5C /* Spot-Ninja-Background.png */; };
+		4F7708361CCAEE43007D9DD9 /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7708341CCAEE43007D9DD9 /* ActionButton.swift */; };
+		4F7708371CCAEE43007D9DD9 /* ActionButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7708351CCAEE43007D9DD9 /* ActionButtonItem.swift */; };
+		4FCCD9501CC7122800716304 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FCCD94F1CC7122800716304 /* Images.xcassets */; };
+		4FCCD9521CC7B44E00716304 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FCCD9511CC7B44E00716304 /* Main.storyboard */; };
+		4FCCD9581CC7C69F00716304 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCCD9571CC7C69F00716304 /* SignUpViewController.swift */; };
 		69A316776D0A44FFB09985C7 /* Pods_Spot_Ninja.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A17113319EA03A495E681CA1 /* Pods_Spot_Ninja.framework */; };
 /* End PBXBuildFile section */
 
@@ -22,13 +25,16 @@
 		4F59DE4A1CC333B20058542B /* Spot Ninja.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Spot Ninja.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F59DE571CC333B20058542B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4F59DE591CC333B20058542B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4F59DE5F1CC334770058542B /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		4F59DE611CC334990058542B /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4F59DE621CC334990058542B /* NewMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMapViewController.swift; sourceTree = "<group>"; };
 		4F59DE631CC3349A0058542B /* ShowRouteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowRouteViewController.swift; sourceTree = "<group>"; };
 		4F59DE641CC3349A0058542B /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		4F59DE651CC3349A0058542B /* BaseService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseService.swift; sourceTree = "<group>"; };
-		4FB7FBC11CC35C570017AD5C /* Spot-Ninja-Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Spot-Ninja-Background.png"; sourceTree = "<group>"; };
+		4F7708341CCAEE43007D9DD9 /* ActionButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
+		4F7708351CCAEE43007D9DD9 /* ActionButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionButtonItem.swift; sourceTree = "<group>"; };
+		4FCCD94F1CC7122800716304 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		4FCCD9511CC7B44E00716304 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		4FCCD9571CC7C69F00716304 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		9BB3681328ACBD3AAE9796FA /* Pods-Spot Ninja.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Spot Ninja.release.xcconfig"; path = "Pods/Target Support Files/Pods-Spot Ninja/Pods-Spot Ninja.release.xcconfig"; sourceTree = "<group>"; };
 		A17113319EA03A495E681CA1 /* Pods_Spot_Ninja.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Spot_Ninja.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D94F27FC62E77B642BF99D78 /* Pods-Spot Ninja.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Spot Ninja.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Spot Ninja/Pods-Spot Ninja.debug.xcconfig"; sourceTree = "<group>"; };
@@ -67,13 +73,16 @@
 		4F59DE4C1CC333B20058542B /* Spot Ninja */ = {
 			isa = PBXGroup;
 			children = (
-				4F59DE611CC334990058542B /* AppDelegate.swift */,
-				4F59DE621CC334990058542B /* NewMapViewController.swift */,
-				4F59DE631CC3349A0058542B /* ShowRouteViewController.swift */,
+				4F7708341CCAEE43007D9DD9 /* ActionButton.swift */,
+				4F7708351CCAEE43007D9DD9 /* ActionButtonItem.swift */,
+				4FCCD94F1CC7122800716304 /* Images.xcassets */,
+				4FCCD9511CC7B44E00716304 /* Main.storyboard */,
 				4F59DE641CC3349A0058542B /* ViewController.swift */,
+				4FCCD9571CC7C69F00716304 /* SignUpViewController.swift */,
+				4F59DE621CC334990058542B /* NewMapViewController.swift */,
 				4F59DE651CC3349A0058542B /* BaseService.swift */,
-				4F59DE5F1CC334770058542B /* Main.storyboard */,
-				4FB7FBC11CC35C570017AD5C /* Spot-Ninja-Background.png */,
+				4F59DE611CC334990058542B /* AppDelegate.swift */,
+				4F59DE631CC3349A0058542B /* ShowRouteViewController.swift */,
 				4F59DE561CC333B20058542B /* LaunchScreen.storyboard */,
 				4F59DE591CC333B20058542B /* Info.plist */,
 			);
@@ -159,9 +168,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4FB7FBC21CC35C570017AD5C /* Spot-Ninja-Background.png in Resources */,
-				4F59DE601CC334770058542B /* Main.storyboard in Resources */,
+				4FCCD9521CC7B44E00716304 /* Main.storyboard in Resources */,
 				4F59DE581CC333B20058542B /* LaunchScreen.storyboard in Resources */,
+				4FCCD9501CC7122800716304 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -220,11 +229,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FCCD9581CC7C69F00716304 /* SignUpViewController.swift in Sources */,
 				4F59DE681CC3349A0058542B /* ShowRouteViewController.swift in Sources */,
+				4F7708371CCAEE43007D9DD9 /* ActionButtonItem.swift in Sources */,
 				4F59DE671CC3349A0058542B /* NewMapViewController.swift in Sources */,
 				4F59DE691CC3349A0058542B /* ViewController.swift in Sources */,
 				4F59DE6A1CC3349A0058542B /* BaseService.swift in Sources */,
 				4F59DE661CC3349A0058542B /* AppDelegate.swift in Sources */,
+				4F7708361CCAEE43007D9DD9 /* ActionButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

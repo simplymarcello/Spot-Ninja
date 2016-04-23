@@ -16,26 +16,9 @@ let geoFire = GeoFire(firebaseRef: FIREBASE_URL)
 
 class NewMapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
-    @IBOutlet weak var userHeadingBtn: UIButton!
-    
     var spots = Dictionary<String,CLLocation>()
     
     var pins = Dictionary<String,CustomPointAnnotationOpenSpot>()
-    
-    func randomStringWithLength (len : Int) -> NSString {
-        
-        let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-        
-        let randomString : NSMutableString = NSMutableString(capacity: len)
-        
-        for _ in 0..<len {
-            let length = UInt32 (letters.length)
-            let rand = arc4random_uniform(length)
-            randomString.appendFormat("%C", letters.characterAtIndex(Int(rand)))
-        }
-        
-        return randomString
-    }
 
     @IBOutlet weak var map: MKMapView!
     
@@ -43,23 +26,9 @@ class NewMapViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
     
     var canReport = false
     
-    @IBOutlet var secondaryMenu: UIView!
-    
-    var destination = MKMapItem?()
-    
     var manager: CLLocationManager!
-
-    var latLocal:Double = 0.0
-    var lonLocal:Double = 0.0
     
-    let appDel: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-    
-    @IBAction func LogoutAction(sender: AnyObject) {
-        CURRENT_USER.unauth()
-        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: "uid")
-        let rootController = storyboard!.instantiateViewControllerWithIdentifier("welcome")
-        self.presentViewController(rootController, animated: true, completion: nil)
-    }
+    var actionButton: ActionButton!
     
 // Still implimenting this
     
@@ -82,41 +51,93 @@ class NewMapViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
 //        })
 //    }
     
-    func zoomInOnce() {
-        let coordinate = CLLocationCoordinate2DMake(map.userLocation.coordinate.latitude, map.userLocation.coordinate.longitude)
-        
-        let latDelta:CLLocationDegrees = 0.02
-        
-        let lonDelta:CLLocationDegrees = 0.02
-        
-        let span:MKCoordinateSpan = MKCoordinateSpanMake(latDelta, lonDelta)
-        
-        let region:MKCoordinateRegion = MKCoordinateRegionMake(coordinate, span)
-        
-        self.map.setRegion(region, animated: true)
-    }
-    
-    @IBAction func refreshMap(sender: AnyObject) {
-        let annotationsToRemove = map.annotations
-        self.map.removeAnnotations(annotationsToRemove)
-    }
+//    @IBAction func refreshMap(sender: AnyObject) {
+//        let annotationsToRemove = map.annotations
+//        self.map.removeAnnotations(annotationsToRemove)
+//    }
     
     override func viewDidLoad() {
-        map.delegate = self
+        let circleImage = UIImage(named: "circle.png")!
+        let squareImage = UIImage(named: "square.png")!
+        
+        let circle = ActionButtonItem(title: "Cricle", image: circleImage)
+        circle.action = { item in print("Find Parking Spot") }
+        
+        let square = ActionButtonItem(title: "Square", image: squareImage)
+        square.action = { item in print("Report Error") }
+        
+        actionButton = ActionButton(attachedToView: self.view, items: [circle, square])
+        actionButton.action = { button in button.toggleMenu() }
+        actionButton.setTitle("+", forState: .Normal)
+        
+        actionButton.backgroundColor = UIColor(red: 238.0/255.0, green: 130.0/255.0, blue: 34.0/255.0, alpha:1.0)
+        
+        super.viewDidLoad()
+        self.map.delegate = self
         manager = CLLocationManager()
-        manager.delegate = self
         let trackingButton = MKUserTrackingBarButtonItem(mapView: self.map)
         navigationItem.rightBarButtonItem = trackingButton
-        super.viewDidLoad()
-        manager.desiredAccuracy = kCLLocationAccuracyBest
-        self.map.showsUserLocation = true
-        
         let uilpgr = UILongPressGestureRecognizer(target: self, action: #selector(NewMapViewController.action(_:)))
-        
         uilpgr.minimumPressDuration = 1.0
-        
         map.addGestureRecognizer(uilpgr)
+    }
+    
+    func mapViewWillStartLocatingUser(mapView: MKMapView){
+        print("mapViewWillStartLocatingUser")
+        let status = CLLocationManager.authorizationStatus()
         
+        if status == CLAuthorizationStatus.NotDetermined {
+            manager.requestWhenInUseAuthorization()
+            manager.desiredAccuracy = kCLLocationAccuracyBest
+        } else {
+            manager.desiredAccuracy = kCLLocationAccuracyBest
+        }
+    }
+    
+    func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        if control == view.rightCalloutAccessoryView {
+            canReport = false
+            canClaim = false
+            let userLocation = CLLocation(latitude: map.userLocation.coordinate.latitude, longitude: map.userLocation.coordinate.longitude)
+            let pinLocation = CLLocation(latitude: view.annotation!.coordinate.latitude, longitude: view.annotation!.coordinate.longitude)
+            
+            if view.annotation!.title! == "Open Spot!" && userLocation.distanceFromLocation(pinLocation) < 200.0 {
+                canClaim = true
+            }else if userLocation.distanceFromLocation(pinLocation) < 200.0 {
+                canReport = true
+            }
+            
+            let actionSheet = UIAlertController(title: "Project Spot", message: nil, preferredStyle: .ActionSheet)
+            
+            let reportAction = UIAlertAction(title: "Report Spot", style: .Default, handler: { action in
+                self.reportSpot(pinLocation)
+            })
+            
+            let claimAction = UIAlertAction(title: "Claim Spot", style: .Destructive, handler: { action in
+                self.claimSpot(view.annotation!.subtitle!!)
+                mapView.removeAnnotation(view.annotation!)
+            })
+            
+            let canelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+            
+            if canReport {
+                reportAction.enabled = true
+            }else{
+                reportAction.enabled = false
+            }
+            if canClaim {
+                claimAction.enabled = true
+            }else{
+                claimAction.enabled = false
+            }
+            
+            actionSheet.addAction(reportAction)
+            actionSheet.addAction(claimAction)
+            actionSheet.addAction(canelAction)
+            
+            self.presentViewController(actionSheet, animated: true, completion: nil)
+            
+        }
     }
     
     func action(gestureRecognizer:UIGestureRecognizer) {
@@ -166,72 +187,6 @@ class NewMapViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
             })
             
         }
-    }
-
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation], didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        
-        if CLLocationManager.locationServicesEnabled() {
-            switch status {
-            case .NotDetermined:
-                manager.requestAlwaysAuthorization()
-            case .AuthorizedWhenInUse:
-                manager.startUpdatingLocation()
-                map.showsUserLocation = true
-                map.setUserTrackingMode(.Follow, animated: true)
-            default:
-                break
-            }
-        }
-        
-        let userLocation:CLLocation = locations[0] as CLLocation
-        
-        let latitude  = userLocation.coordinate.latitude
-        let longitude = userLocation.coordinate.longitude
-        
-        latLocal = latitude
-        lonLocal = longitude
-        
-        let center = CLLocation(latitude: latitude, longitude: longitude)
-        
-        let circleQuery = geoFire.queryAtLocation(center, withRadius: 0.2)
-        
-        circleQuery.observeEventType(.KeyEntered, withBlock: { (key: String!, location: CLLocation!) in
-            let value = self.spots.updateValue(location, forKey: key)
-            if value == nil {
-                let annotation = CustomPointAnnotationOpenSpot()
-                annotation.coordinate = CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude)
-                annotation.title = "Open Spot!"
-                annotation.subtitle=key
-                self.map.addAnnotation(annotation)
-                self.pins.updateValue(annotation, forKey: key)
-            }
-
-            
-        })
-        
-        circleQuery.observeEventType(.KeyExited, withBlock: { (key: String!, location: CLLocation!) in
-            let value = self.spots.indexForKey(key)
-            if value != nil {
-                let spot_to_remove = self.spots.indexForKey(key)
-                let pin_to_remove = self.pins.indexForKey(key)
-                self.map.removeAnnotation(self.pins[key]!)
-                self.spots.removeAtIndex(spot_to_remove!)
-                self.pins.removeAtIndex(pin_to_remove!)
-            }
-            
-        })
-
-        for (x, y) in self.spots {
-            let distance = userLocation.distanceFromLocation(y)
-            if distance > 200 {
-                let spot_to_remove = self.spots.indexForKey(x)
-                let pin_to_remove = self.pins.indexForKey(x)
-                self.spots.removeAtIndex(spot_to_remove!)
-                self.map.removeAnnotation(self.pins[x]!)
-                self.pins.removeAtIndex(pin_to_remove!)
-            }
-        }
-
     }
     
     func indicateParkingLocation(latitude:Double, longitude:Double){
@@ -283,51 +238,54 @@ class NewMapViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
         return pinView
     }
     
-    
-    func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        if control == view.rightCalloutAccessoryView {
-            canReport = false
-            canClaim = false
-            let userLocation = CLLocation(latitude: latLocal, longitude: lonLocal)
-            let pinLocation = CLLocation(latitude: view.annotation!.coordinate.latitude, longitude: view.annotation!.coordinate.longitude)
-            
-            if view.annotation!.title! == "Open Spot!" && userLocation.distanceFromLocation(pinLocation) < 200.0 {
-                canClaim = true
-            }else if userLocation.distanceFromLocation(pinLocation) < 200.0 {
-                canReport = true
+    func mapView(mapView: MKMapView, didUpdateUserLocation userLocation: MKUserLocation) {
+        let location = userLocation.location
+        
+        let center = CLLocation(latitude: location!.coordinate.latitude, longitude: location!.coordinate.longitude)
+        let circleQuery = geoFire.queryAtLocation(center, withRadius: 0.2)
+        
+        circleQuery.observeEventType(.KeyEntered, withBlock: { (key: String!, location: CLLocation!) in
+            let value = self.spots.updateValue(location, forKey: key)
+            if value == nil {
+                let annotation = CustomPointAnnotationOpenSpot()
+                annotation.coordinate = CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude)
+                annotation.title = "Open Spot!"
+                annotation.subtitle=key
+                self.map.addAnnotation(annotation)
+                self.pins.updateValue(annotation, forKey: key)
             }
             
-            let actionSheet = UIAlertController(title: "Project Spot", message: nil, preferredStyle: .ActionSheet)
             
-            let reportAction = UIAlertAction(title: "Report Spot", style: .Default, handler: { action in
-                self.reportSpot(pinLocation)
-            })
-            
-            let claimAction = UIAlertAction(title: "Claim Spot", style: .Destructive, handler: { action in
-                self.claimSpot(view.annotation!.subtitle!!)
-                mapView.removeAnnotation(view.annotation!)
-            })
-            
-            let canelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
-            
-            if canReport {
-                reportAction.enabled = true
-            }else{
-                reportAction.enabled = false
+        })
+        
+        circleQuery.observeEventType(.KeyExited, withBlock: { (key: String!, location: CLLocation!) in
+            let value = self.spots.indexForKey(key)
+            if value != nil {
+                let spot_to_remove = self.spots.indexForKey(key)
+                let pin_to_remove = self.pins.indexForKey(key)
+                self.map.removeAnnotation(self.pins[key]!)
+                self.spots.removeAtIndex(spot_to_remove!)
+                self.pins.removeAtIndex(pin_to_remove!)
             }
-            if canClaim {
-                claimAction.enabled = true
-            }else{
-                claimAction.enabled = false
-            }
-
-            actionSheet.addAction(reportAction)
-            actionSheet.addAction(claimAction)
-            actionSheet.addAction(canelAction)
-
-            self.presentViewController(actionSheet, animated: true, completion: nil)
             
+        })
+        
+        for (x, y) in self.spots {
+            let distance = location!.distanceFromLocation(y)
+            if distance > 200 {
+                let spot_to_remove = self.spots.indexForKey(x)
+                let pin_to_remove = self.pins.indexForKey(x)
+                self.spots.removeAtIndex(spot_to_remove!)
+                self.map.removeAnnotation(self.pins[x]!)
+                self.pins.removeAtIndex(pin_to_remove!)
+            }
         }
+    }
+    
+    func displayAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in }))
+        self.presentViewController(alert, animated: true, completion: nil)
     }
     
     func reportSpot(pinLocation: CLLocation) {
@@ -348,6 +306,28 @@ class NewMapViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
     
     class CustomPointAnnotationSpot: MKPointAnnotation {
         var spotKey: String = ""
+    }
+    
+    func randomStringWithLength (len : Int) -> NSString {
+        
+        let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        
+        let randomString : NSMutableString = NSMutableString(capacity: len)
+        
+        for _ in 0..<len {
+            let length = UInt32 (letters.length)
+            let rand = arc4random_uniform(length)
+            randomString.appendFormat("%C", letters.characterAtIndex(Int(rand)))
+        }
+        
+        return randomString
+    }
+
+    
+    @IBAction func LogoutAction(sender: AnyObject) {
+        CURRENT_USER!.unauth()
+        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: "uid")
+        self.performSegueWithIdentifier("LogoutSegue", sender: nil)
     }
 }
 
