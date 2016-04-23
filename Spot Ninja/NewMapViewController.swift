@@ -15,19 +15,12 @@ let geoFire = GeoFire(firebaseRef: FIREBASE_URL)
 
 
 class NewMapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
-    
     var spots = Dictionary<String,CLLocation>()
-    
     var pins = Dictionary<String,CustomPointAnnotationOpenSpot>()
-
     @IBOutlet weak var map: MKMapView!
-    
     var canClaim = false
-    
     var canReport = false
-    
     var manager: CLLocationManager!
-    
     var actionButton: ActionButton!
     
 // Still implimenting this
@@ -57,6 +50,14 @@ class NewMapViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
 //    }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        self.map.delegate = self
+        manager = CLLocationManager()
+        let trackingButton = MKUserTrackingBarButtonItem(mapView: self.map)
+        navigationItem.rightBarButtonItem = trackingButton
+        let uilpgr = UILongPressGestureRecognizer(target: self, action: #selector(NewMapViewController.action(_:)))
+        uilpgr.minimumPressDuration = 1.0
+        map.addGestureRecognizer(uilpgr)
         let circleImage = UIImage(named: "circle.png")!
         let squareImage = UIImage(named: "square.png")!
         
@@ -71,15 +72,6 @@ class NewMapViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
         actionButton.setTitle("+", forState: .Normal)
         
         actionButton.backgroundColor = UIColor(red: 238.0/255.0, green: 130.0/255.0, blue: 34.0/255.0, alpha:1.0)
-        
-        super.viewDidLoad()
-        self.map.delegate = self
-        manager = CLLocationManager()
-        let trackingButton = MKUserTrackingBarButtonItem(mapView: self.map)
-        navigationItem.rightBarButtonItem = trackingButton
-        let uilpgr = UILongPressGestureRecognizer(target: self, action: #selector(NewMapViewController.action(_:)))
-        uilpgr.minimumPressDuration = 1.0
-        map.addGestureRecognizer(uilpgr)
     }
     
     func mapViewWillStartLocatingUser(mapView: MKMapView){

@@ -13,8 +13,8 @@
 		4F59DE681CC3349A0058542B /* ShowRouteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F59DE631CC3349A0058542B /* ShowRouteViewController.swift */; };
 		4F59DE691CC3349A0058542B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F59DE641CC3349A0058542B /* ViewController.swift */; };
 		4F59DE6A1CC3349A0058542B /* BaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F59DE651CC3349A0058542B /* BaseService.swift */; };
-		4F7708361CCAEE43007D9DD9 /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7708341CCAEE43007D9DD9 /* ActionButton.swift */; };
-		4F7708371CCAEE43007D9DD9 /* ActionButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7708351CCAEE43007D9DD9 /* ActionButtonItem.swift */; };
+		4F77083A1CCAF4CA007D9DD9 /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7708381CCAF4CA007D9DD9 /* ActionButton.swift */; };
+		4F77083B1CCAF4CA007D9DD9 /* ActionButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7708391CCAF4CA007D9DD9 /* ActionButtonItem.swift */; };
 		4FCCD9501CC7122800716304 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FCCD94F1CC7122800716304 /* Images.xcassets */; };
 		4FCCD9521CC7B44E00716304 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FCCD9511CC7B44E00716304 /* Main.storyboard */; };
 		4FCCD9581CC7C69F00716304 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCCD9571CC7C69F00716304 /* SignUpViewController.swift */; };
@@ -30,8 +30,8 @@
 		4F59DE631CC3349A0058542B /* ShowRouteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowRouteViewController.swift; sourceTree = "<group>"; };
 		4F59DE641CC3349A0058542B /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		4F59DE651CC3349A0058542B /* BaseService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseService.swift; sourceTree = "<group>"; };
-		4F7708341CCAEE43007D9DD9 /* ActionButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
-		4F7708351CCAEE43007D9DD9 /* ActionButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionButtonItem.swift; sourceTree = "<group>"; };
+		4F7708381CCAF4CA007D9DD9 /* ActionButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
+		4F7708391CCAF4CA007D9DD9 /* ActionButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionButtonItem.swift; sourceTree = "<group>"; };
 		4FCCD94F1CC7122800716304 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		4FCCD9511CC7B44E00716304 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		4FCCD9571CC7C69F00716304 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
@@ -73,8 +73,8 @@
 		4F59DE4C1CC333B20058542B /* Spot Ninja */ = {
 			isa = PBXGroup;
 			children = (
-				4F7708341CCAEE43007D9DD9 /* ActionButton.swift */,
-				4F7708351CCAEE43007D9DD9 /* ActionButtonItem.swift */,
+				4F7708381CCAF4CA007D9DD9 /* ActionButton.swift */,
+				4F7708391CCAF4CA007D9DD9 /* ActionButtonItem.swift */,
 				4FCCD94F1CC7122800716304 /* Images.xcassets */,
 				4FCCD9511CC7B44E00716304 /* Main.storyboard */,
 				4F59DE641CC3349A0058542B /* ViewController.swift */,
@@ -231,12 +231,12 @@
 			files = (
 				4FCCD9581CC7C69F00716304 /* SignUpViewController.swift in Sources */,
 				4F59DE681CC3349A0058542B /* ShowRouteViewController.swift in Sources */,
-				4F7708371CCAEE43007D9DD9 /* ActionButtonItem.swift in Sources */,
+				4F77083B1CCAF4CA007D9DD9 /* ActionButtonItem.swift in Sources */,
 				4F59DE671CC3349A0058542B /* NewMapViewController.swift in Sources */,
 				4F59DE691CC3349A0058542B /* ViewController.swift in Sources */,
 				4F59DE6A1CC3349A0058542B /* BaseService.swift in Sources */,
 				4F59DE661CC3349A0058542B /* AppDelegate.swift in Sources */,
-				4F7708361CCAEE43007D9DD9 /* ActionButton.swift in Sources */,
+				4F77083A1CCAF4CA007D9DD9 /* ActionButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

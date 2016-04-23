@@ -67,9 +67,6 @@ public class ActionButton: NSObject {
     /// View where the *floatButton* will be displayed
     private var parentView: UIView!
     
-    /// Blur effect that will be presented when the button is active
-    private var blurVisualEffect: UIVisualEffectView!
-    
     // Distance between each item action
     private let itemOffset = -55
     
@@ -91,7 +88,7 @@ public class ActionButton: NSObject {
         self.floatButton.layer.shadowColor = UIColor.grayColor().CGColor
         self.floatButton.setTitle("+", forState: .Normal)
         self.floatButton.setImage(nil, forState: .Normal)
-        self.floatButton.backgroundColor = UIColor.clearColor()
+        self.floatButton.backgroundColor = self.backgroundColor
         self.floatButton.titleLabel!.font = UIFont(name: "HelveticaNeue-Light", size: 35)
         self.floatButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 8, right: 0)
         self.floatButton.userInteractionEnabled = true
@@ -102,9 +99,6 @@ public class ActionButton: NSObject {
         self.parentView.addSubview(self.floatButton)
 
         self.contentView = UIView(frame: bounds)
-        self.blurVisualEffect = UIVisualEffectView(effect: UIBlurEffect(style: .ExtraLight))
-        self.blurVisualEffect.frame = self.contentView.frame
-        self.contentView.addSubview(self.blurVisualEffect)
         
         let tap = UITapGestureRecognizer(target: self, action: Selector("backgroundTapped:"))
         self.contentView.addGestureRecognizer(tap)

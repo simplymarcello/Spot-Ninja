@@ -15,7 +15,6 @@ extension UIViewController {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
     }
-    
     func dismissKeyboard() {
         view.endEditing(true)
     }
@@ -26,20 +25,26 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var passwordTextField: UITextField!
     let gradient: CAGradientLayer = CAGradientLayer()
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
+    
     func textFieldShouldReturn(userText: UITextField) -> Bool {
         userText.resignFirstResponder()
         return true;
     }
+    
     override func viewDidLoad() {
-        if (CURRENT_USER != nil) {
-            self.performSegueWithIdentifier("SignInSegue", sender: nil)
-        }
         emailTextField.delegate = self
         passwordTextField.delegate = self
         super.viewDidLoad()
         gradient.frame = self.view.bounds
         gradient.colors = [UIColorFromRGB(0x1D77EF).CGColor, UIColorFromRGB(0x81F3FD).CGColor]
         view.layer.insertSublayer(gradient, atIndex: 0)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        print("ViewDidApper")
+        if CURRENT_USER != nil {
+            self.performSegueWithIdentifier("SignInSegue", sender: nil)
+        }
     }
     
     func displayAlert(title: String, message: String) {

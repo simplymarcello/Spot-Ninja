@@ -70,7 +70,7 @@ public class ActionButtonItem: NSObject {
         super.init()
         
         self.view = UIView(frame: CGRect(origin: CGPointZero, size: self.viewSize))
-        self.view.alpha = 0
+        self.view.alpha = 0.0
         self.view.userInteractionEnabled = true
         self.view.backgroundColor = UIColor.clearColor()
         

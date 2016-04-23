@@ -200,7 +200,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="map" destination="Uoe-DZ-Oh0" id="HVd-DU-oBy"/>
-                        <segue destination="BYZ-38-t0r" kind="show" identifier="LogoutSegue" id="L3x-Lc-NzE"/>
+                        <segue destination="BYZ-38-t0r" kind="presentation" identifier="LogoutSegue" modalPresentationStyle="fullScreen" id="L3x-Lc-NzE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WDL-0f-yKV" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -215,7 +215,6 @@
         <!--Sign Up View Controller-->
         <scene sceneID="SGc-MF-Qix">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dsV-sb-AfT" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="Rqu-gk-nUl" customClass="SignUpViewController" customModule="Spot_Ninja" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="pQz-1j-lKq"/>
@@ -325,6 +324,7 @@
                         <segue destination="BYZ-38-t0r" kind="show" identifier="ErrorSegue" id="iAt-Tn-nmp"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dsV-sb-AfT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-77" y="1218"/>
         </scene>
@@ -351,6 +351,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="L3x-Lc-NzE"/>
-        <segue reference="lfg-8n-5Ch"/>
+        <segue reference="teB-ES-hyQ"/>
     </inferredMetricsTieBreakers>
 </document>
